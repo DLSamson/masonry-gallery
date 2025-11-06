@@ -1,71 +1,49 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <title>Masonry Images</title>
-        <link rel="icon" type="image/svg" href="favicon.svg">
-        
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-        <meta name="description" content="Simple example of using masonry.js with pony images">
-        <meta name="keywords" content="Masonry, Masonry Images, Masonry Layout, My Little Pony, Pony, PonyWeb Api, Github Project">
+    <title>Masonry Images</title>
 
-        <!-- Open Graph -->
-        <meta property="og:title" content="Masonry Images" />
-        <meta property="og:description" content="Simple and responsive example of using masonry.js with pony images taken from PonyWeb API and source code on Github"/>
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://dlsamson.github.io/MasonryImages" />
-        <meta property="og:image" content="https://dlsamson.github.io/MasonryImages/og_image.png" />
-        <meta property="og:image:type" content="image/png" />
-        <meta property="og:image:width" content="300" />
-        <meta property="og:image:height" content="280" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs-masonry@latest/dist/masonry.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.15.0/cdn.min.js"></script>
+    <script src="assets/script.js"></script>
 
-        <!-- Yandex Webmaster -->
-        <meta name="yandex-verification" content="ab4dd6d5e5cd5a2d" />
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
 
-        <link rel="stylesheet" href="assets/normalize.css">
-        <link rel="stylesheet" href="assets/skeleton.css">
-        <link rel="stylesheet" href="assets/style.css">
-    </head>
-    <body>
-        <div class="container">
-            <!-- <h1>Masonry Images</h1> -->
-            <!-- <p class="description">
-                This is my simple example of using masonry.js 
-                with pony images taken from PonyWeb API.
-                <br>
-                You can click on image to change its size
-            </p> -->
-            <h1>Ты Солнышко</h1>
-            <p class="description">
-                Спасибо, что ты есть... <span style="font-size: 8px">люблю тебя <3</span>
-            </p>
-            <!-- <p class="description">
-                You may find the whole project on <a target="_blank" href="https://github.com/DLSamson/MasonryImages">Github</a>
-            </p> -->
-            <!-- <p class="description">
-                Also here are the links to what I used:
-            </p> -->
-            <!--<div class="tags">
-                <a class="tag tag_js" target="_blank" href="https://masonry.desandro.com">Masonry</a>
-                <a class="tag tag_js" target="_blank" href="https://axios-http.com">Axios</a>
-                <a class="tag tag_js" target="_blank" href="https://jquery.com">JQuery</a>
-                <a class="tag tag_css" target="_blank" href="http://getskeleton.com">Skeleton CSS</a>
-                <a class="tag tag_api" target="_blank" href="http://ponyweb.ml">PonyWeb API</a>
-                <a class="tag tag_api" target="_blank" href="https://wishiy.com/">Wishiy</a>
-            </div> -->
-            <hr>
-            <div class="dashboard">
-                <!-- The first div needs to help masonry 
-                    calculate the lowest width of image -->
-                <div class="grid-sizer"></div>
+<body class="bg-white min-h-screen min-w-screen">
+    <div class="mx-auto">
+        <div class="font-sans pt-8 grid gap-8 px-2 sm:px-8">
+            <h1 class="text-slate-500 font-bold text-xl sm:text-4xl">Masonry Images</h1>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start" x-data="masonry" x-masonry.wait.2500>
+                <template x-for="item in items">
+                    <img
+                        :src="item.src"
+                        :alt="item.alt"
+                        class="w-full hover:scale-105 rounded-md duration-300 mb-4 border border-black/20"
+                        x-show="true"
+                        x-transition:enter="transition ease-out duration-300"
+                        x-transition:enter-start="opacity-0 scale-90"
+                        x-transition:enter-end="opacity-100 scale-100"
+                    />
+                </template>
+
+                <div x-intersect.margin.200px="loadImages()"></div>
             </div>
+            <div class="p-8 aspect-square border-t-2 w-16 rounded-full mx-auto border-slate-500 animate-spin"></div>
         </div>
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-        <script src="assets/script.js"></script>
-    </body>
+    </div>
+</body>
 </html>
