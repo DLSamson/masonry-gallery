@@ -10,42 +10,48 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+
+    <script defer src="assets/script.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs-masonry@latest/dist/masonry.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.15.0/cdn.min.js"></script>
-    <script src="assets/script.js"></script>
 
     <style>
         [x-cloak] {
             display: none !important;
         }
+
+        .fade-in {
+            animation: fadeIn .3s 1;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-10%) }
+            100% { opacity: 1; transform: translateY(0) }
+        }
     </style>
 </head>
 
-<body class="bg-white min-h-screen min-w-screen">
-    <div class="mx-auto">
-        <div class="font-sans pt-8 grid gap-8 px-2 sm:px-8">
-            <h1 class="text-slate-500 font-bold text-xl sm:text-4xl">Masonry Images</h1>
+<body class="bg-white min-h-screen min-w-screen relative">
+    <div class="sticky top-0 flex h-16 justify-start items-center bg-white px-8 gap-2 uppercase">
+        <img src="./favicon.svg" alt="" class="w-fit h-8">
+        <h1 class="text-slate-500 font-bold text-xl sm:text-2xl">Masonry Images</h1>
+    </div>
 
-            <ul class="grid sm:grid-cols-3 lg:grid-cols-7 gap-4 items-start" x-data="masonry" x-masonry.poll.2500>
-                <template x-for="item in items">
-                    <li>
-                        <img
-                            :src="item.src"
-                            :alt="item.alt"
-                            class="w-full hover:scale-105 rounded-md duration-300 border border-black/20"
-                            x-show="true"
-                        />
-                    </li>
-                </template>
+    <div class="pt-8 px-2 sm:px-8 overflow-hidden" x-data="masonry">
+        <ul class="grid sm:grid-cols-3 lg:grid-cols-4 gap-4 items-start overflow-auto" x-masonry x-masonry.poll.3000>
+            <template x-for="item in items">
+                <li class="fade-in">
+                    <img
+                        :src="item.src"
+                        :alt="item.alt"
+                        class="rounded-md w-full overflow-hidden"
+                    >
+                </li>
+            </template>
 
-                <template x-if="items.length > 0">
-                    <li x-intersect.margin.1000px="loadImages()"></li>
-                </template>
-            </ul>
-
-            <div class="p-8 aspect-square border-t-2 w-16 rounded-full mx-auto border-slate-500 animate-spin"></div>
-        </div>
+            <li x-intersect.margin.250px="loadImages" class="bg-slate-200 animate-pulse h-72 w-full rounded-md"></li>
+        </ul>
     </div>
 </body>
 </html>

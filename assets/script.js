@@ -37,44 +37,52 @@ const init_modules = (modules) => {
     });
 }
 
+const imageProviders = {
+    ponyImages: async (offset, limit) => new Promise((resolve, reject) => {
+        axios.get('https://ponyapi.net/v1/character/all', {
+            params: {offset: offset, limit: limit}
+        })
+            .then(({ data }) => {
+                const images = data.data.reduce((accum, character) => {
+                    const images = character.image.map((src, i) => ({
+                        src: src,
+                        alt: `${character.name} image ${i + 1}`,
+                        loaded: false,
+                    }));
+
+                    return [...accum, ...images];
+                }, []);
+
+                resolve(images);
+            })
+            .catch(reject);
+    }),
+
+    current() {
+        return imageProviders.ponyImages
+    }
+}
+
 const masonry = () => Alpine.data('masonry', () => ({
     init() {
         this.loadImages();
     },
 
     loadImages() {
-        const providers = {
-            ponyImages: async () => new Promise((resolve, reject) => {
-                axios.get('https://ponyapi.net/v1/character/all', {
-                    params: {offset: this.offset, limit: this.limit}
-                })
-                    .then(({ data }) => {
-                        const images = data.data.reduce((accum, character) => {
-                            const images = character.image.map((src, i) => ({
-                                src: src,
-                                alt: `${character.name} image ${i + 1}`
-                            }));
-
-                            return [...accum, ...images];
-                        }, []);
-
-                        resolve(images);
-                    })
-                    .catch(reject);
-            }),
-        }
-
         this.isLoading = true;
-        providers.ponyImages()
+        imageProviders.current()(this.offset, this.limit)
             .then((images) => {
-                shuffle(images)
                 this.items = [...this.items ?? [], ...images];
                 this.offset = this.offset + this.limit;
-                setTimeout(() => this.$dispatch('reload:masonry'), 500);
+                this.updateLayout();
             })
             .finally(() => {
                 this.isLoading = false;
             });
+    },
+
+    updateLayout() {
+        setTimeout(() => this.$dispatch('reload:masonry'), 100);
     },
 
     offset: 0,
