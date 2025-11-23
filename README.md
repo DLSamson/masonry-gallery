@@ -1,36 +1,38 @@
-# Masonry images
+# Masonry Gallery
 
-This is my simple example of using masonry.js with pony images taken from PonyWeb API
+This is my simple masonry gallery made with TypeScript, React, Motion and Vite.
 
-You can click on image to change it's size
+You can click on image to zoom it or to get some more information
 
-## This is what I used here:
+I tried to recreate an example from
+motion [documentation](https://motion.dev/docs/react-layout-animations#how-to-animate-layout-changes) `IOS App Store`
 
-### CSS: 
+## Image Providers
 
-[Skeleton CSS](http://getskeleton.com)
+Here are some services I used to get images
 
-### JS:
+[PonyApi](https://ponyapi.net')
 
-[Masonry](https://masonry.desandro.com) -
-[Github](https://github.com/desandro/masonry)
+[Nekosia](https://api.nekosia.cat)
 
-[Axios](https://axios-http.com) -
-[Github](https://github.com/axios/axios)
+## How to add your own providers?
 
-[JQuery](https://jquery.com)
+Create a new class in `src/providers` that implements `src/interfaces/ItemsProvider` interface.
 
-### Images:
+Register a new provider in `src/stores/RootStore`.
 
-~~[PonyWeb.ml API](http://ponyweb.ml)~~
-> PonyWeb.ml is not working anymore, but probably in the future it may change.
+Add button to new `src/componenets/Header`
 
-[Wishy](https://wishiy.com)
+## How to add new info card?
 
-> It's not really the best way of using this api, but it works.
+Create a new info card in `src/components/Modal/InfoCard`
 
----
+Add a new type guard function in `src/utils/typeGuards`
 
-> Wishy's developer, if you read this, I'm sorry for disturbing you.
-> Please contact me DLSamson@yandex.ru if I did something bad.
-> I just wanted to make some kind of a present to a girl I like
+Add a new render to `src/components/Modal/RenderInfoCard`
+
+## Conclusion
+
+Until you follow existing types and interfaces you can easily add new image providers.
+
+If you liked this and added a new image provider, I would like to see it, please create a merge request.
